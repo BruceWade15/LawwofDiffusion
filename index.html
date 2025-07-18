@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Innovator or Laggard Assessment </title>
+    <title>Innovator or Laggard Assessment</title>
     <style>
         * {
             margin: 0;
@@ -460,7 +460,7 @@
         let assessmentData = [];
 
         // Form submission handler
-        document.getElementById('assessmentForm').addEventListener('submit', function(e) {
+        document.getElementById('assessmentForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             // Clear previous errors
@@ -488,13 +488,19 @@
             
             if (!isValid) return;
             
+            // Show loading state
+            const submitButton = document.querySelector('.button');
+            const originalText = submitButton.textContent;
+            submitButton.textContent = 'Saving...';
+            submitButton.disabled = true;
+            
             // Calculate score
             let totalScore = 0;
             for (let i = 1; i <= 8; i++) {
                 totalScore += parseInt(document.getElementById('q' + i).value);
             }
             
-            // Store the assessment data
+            // Prepare assessment data
             const assessmentResult = {
                 name: name,
                 email: email,
@@ -509,14 +515,44 @@
                 assessmentResult.answers['q' + i] = parseInt(document.getElementById('q' + i).value);
             }
             
-            // Add to assessment data array
-            assessmentData.push(assessmentResult);
-            
-            // Store in browser memory for this session
-            window.currentAssessment = assessmentResult;
-            
-            // Show results
-            showResults(assessmentResult);
+            // Send to Google Sheets
+            try {
+                // REPLACE THIS URL WITH YOUR GOOGLE APPS SCRIPT WEB APP URL
+                const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxis4QVs0lS_tGeK92UWDWplcfBWDWHfmpCjWwObPW2ESyqux9xb67WqhjHomTMIrQ/exec';
+                
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(assessmentResult)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Store in browser memory for this session
+                    window.currentAssessment = assessmentResult;
+                    assessmentData.push(assessmentResult);
+                    
+                    // Show results
+                    showResults(assessmentResult);
+                } else {
+                    throw new Error(result.message || 'Failed to save data');
+                }
+                
+            } catch (error) {
+                console.error('Error saving assessment:', error);
+                alert('There was an error saving your assessment. Your results will still be shown, but please contact us if you\'d like to ensure your data is saved.');
+                
+                // Still show results even if saving failed
+                window.currentAssessment = assessmentResult;
+                showResults(assessmentResult);
+            } finally {
+                // Reset button
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
+            }
         });
 
         function getCategory(score) {
