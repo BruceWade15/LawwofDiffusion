@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovator or Laggard Assessment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #1e3a8a;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .logo {
+            max-width: 80px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+            background: #f5f5f5;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="email"]:focus {
+            outline: none;
+            border-color: #1e3a8a;
+        }
+
+        .question {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .question h3 {
+            margin-bottom: 15px;
+            color: #1e3a8a;
+            font-size: 1.1rem;
+        }
+
+        .slider-container {
+            margin: 20px 0;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #ddd;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #1e3a8a;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #1e3a8a;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .slider-value {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #1e3a8a;
+            font-size: 1.1rem;
+        }
+
+        .button {
+            background: #1e3a8a;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .button:hover {
+            background: #1e40af;
+        }
+
+        .button:active {
+            transform: translateY(1px);
+        }
+
+        .results {
+            display: none;
+            padding: 30px;
+            background: white;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .results h2 {
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .category {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #1e3a8a;
+        }
+
+        .category h3 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .book-meeting {
+            background: #1e3a8a;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .book-meeting a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .book-meeting a:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            color: #dc2626;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .container {
+                margin: 5px;
+                border-radius: 5px;
+            }
+
+            .header {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .question {
+                padding: 15px;
+            }
+
+            .question h3 {
+                font-size: 1rem;
+            }
+
+            .slider {
+                height: 10px;
+            }
+
+            .slider::-webkit-slider-thumb {
+                width: 28px;
+                height: 28px;
+            }
+
+            .slider::-moz-range-thumb {
+                width: 28px;
+                height: 28px;
+            }
+
+            .button {
+                padding: 18px 25px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.3rem;
+            }
+
+            .slider-labels {
+                font-size: 0.8rem;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .question {
+                padding: 12px;
+            }
+        }
+
+        /* Touch-friendly enhancements */
+        @media (hover: none) and (pointer: coarse) {
+            .button {
+                padding: 20px 30px;
+                font-size: 1.1rem;
+            }
+
+            .form-group input[type="text"],
+            .form-group input[type="email"] {
+                padding: 16px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://brucewade.co.za/wp-content/uploads/2025/07/bat-3.png" alt="Logo" class="logo">
+            <h1>Innovator or Laggard?</h1>
+            <p>Assess your ability to take on new ideas and projects</p>
+        </div>
+
+        <div class="content">
+            <form id="assessmentForm">
+                <div class="form-group">
+                    <label for="name">Name *</label>
+                    <input type="text" id="name" name="name" required>
+                    <div class="error" id="nameError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required>
+                    <div class="error" id="emailError"></div>
+                </div>
+
+                <div class="question">
+                    <h3>1. When a new technology or tool is released, how quickly do you try it?</h3>
+                    <div class="slider-container">
+                        <input type="range" min="1" max="5" value="3" class="slider" id="q1">
+                        <div class="slider-labels">
+                            <span>Wait for others</span>
+                            <span>Immediately try it</span>
+                        </div>
+                        <div class="slider-value" id="q1-value">3</div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>2. How do you typically respond to change in your workplace?</h3>
+                    <div class="slider-container">
+                        <input type="range" min="1" max="5" value="3" class="slider" id="q2">
+                        <div class="slider-labels">
+                            <span>Resist change</span>
+                            <span>Embrace change</span>
+                        </div>
+                        <div class="slider-value" id="q2-value">3</div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>3. When starting a new project, how do you prefer to approach it?</h3>
+                    <div class="slider-container">
+                        <input type="range" min="1" max="5" value="3" class="slider" id="q3">
+                        <div class="slider-labels">
+                            <span>Follow proven methods</span>
+                            <span>Experiment with new approaches</span>
+                        </div>
+                        <div class="slider-value" id="q3-value">3</div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>4. How comfortable are you with uncertainty and risk?</h3>
+                    <div class="slider-container">
+                        <input type="range" min="1" max="5" value="3" class="slider" id="q4">
+                        <div class="slider-labels">
+                            <span>Very uncomfortable</span>
+                            <span>Very comfortable</span>
+                        </div>
+                        <div class="slider-value" id="q4-value">3</div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>5. How do you typically learn about new trends in your industry?</h3>
+                    <div class="slider-container">
+                        <input type="range" min="1" max="5" value="3" class="slider" id="q5">
+                        <div class="slider-labels">
+                            <span>Wait for them to be proven</span>
+                            <span>Actively seek them out</span>
+                        </div>
+                        <div class="slider-value" id="q5-value">3</div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>6. When making decisions, how much do you rely on others' opinions?</h3>
+                    <div class="slider-container">
+                        <input type="range" min="1" max="5" value="3" class="slider" id="q6">
+                        <div class="slider-labels">
+                            <span>Heavily rely on others</span>
+                            <span>Make independent decisions</span>
+                        </div>
+                        <div class="slider-value" id="q6-value">3</div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>7. How do you feel about being the first to try something new?</h3>
+                    <div class="slider-container">
+                        <input type="range" min="1" max="5" value="3" class="slider" id="q7">
+                        <div class="slider-labels">
+                            <span>Prefer to wait and see</span>
+                            <span>Love being first</span>
+                        </div>
+                        <div class="slider-value" id="q7-value">3</div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>8. How do you view failure when trying new things?</h3>
+                    <div class="slider-container">
+                        <input type="range" min="1" max="5" value="3" class="slider" id="q8">
+                        <div class="slider-labels">
+                            <span>Something to avoid</span>
+                            <span>Learning opportunity</span>
+                        </div>
+                        <div class="slider-value" id="q8-value">3</div>
+                    </div>
+                </div>
+
+                <button type="submit" class="button">Get My Results</button>
+            </form>
+
+            <div class="results" id="results">
+                <h2>Your Innovation Profile</h2>
+                <div class="category" id="resultCategory">
+                    <!-- Results will be populated here -->
+                </div>
+                <div class="book-meeting">
+                    <h3>Ready to Innovate Further?</h3>
+                    <p>Connect with Bruce Wade to explore how innovation and change can transform your business.</p>
+                    <a href="https://outlook.office365.com/book/BookwithBruce@em-solutions.co.za/" target="_blank">
+                        Book a Meeting with Bruce Wade
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update slider values in real-time
+        document.querySelectorAll('.slider').forEach(slider => {
+            slider.addEventListener('input', function() {
+                const valueDisplay = document.getElementById(this.id + '-value');
+                valueDisplay.textContent = this.value;
+            });
+        });
+
+        // Store assessment data
+        let assessmentData = [];
+
+        // Form submission handler
+        document.getElementById('assessmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Clear previous errors
+            document.querySelectorAll('.error').forEach(error => error.textContent = '');
+            
+            // Get form data
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            
+            // Validation
+            let isValid = true;
+            
+            if (!name) {
+                document.getElementById('nameError').textContent = 'Name is required';
+                isValid = false;
+            }
+            
+            if (!email) {
+                document.getElementById('emailError').textContent = 'Email is required';
+                isValid = false;
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById('emailError').textContent = 'Please enter a valid email address';
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+            
+            // Calculate score
+            let totalScore = 0;
+            for (let i = 1; i <= 8; i++) {
+                totalScore += parseInt(document.getElementById('q' + i).value);
+            }
+            
+            // Store the assessment data
+            const assessmentResult = {
+                name: name,
+                email: email,
+                score: totalScore,
+                category: getCategory(totalScore),
+                timestamp: new Date().toISOString(),
+                answers: {}
+            };
+            
+            // Store individual answers
+            for (let i = 1; i <= 8; i++) {
+                assessmentResult.answers['q' + i] = parseInt(document.getElementById('q' + i).value);
+            }
+            
+            // Add to assessment data array
+            assessmentData.push(assessmentResult);
+            
+            // Store in browser memory for this session
+            window.currentAssessment = assessmentResult;
+            
+            // Show results
+            showResults(assessmentResult);
+        });
+
+        function getCategory(score) {
+            if (score >= 35) return 'Innovator';
+            if (score >= 28) return 'Early Adopter';
+            if (score >= 21) return 'Early Majority';
+            if (score >= 14) return 'Late Majority';
+            return 'Laggard';
+        }
+
+        function showResults(assessment) {
+            const categories = {
+                'Innovator': {
+                    title: 'Innovator',
+                    description: 'You are a true innovator! You love being first to try new things and are comfortable with risk and uncertainty. You actively seek out new trends and aren\'t afraid of failure - you see it as a learning opportunity. You make independent decisions and prefer to experiment with new approaches rather than follow proven methods.'
+                },
+                'Early Adopter': {
+                    title: 'Early Adopter',
+                    description: 'You are an early adopter who embraces new ideas once they show promise. You\'re comfortable with change and willing to take calculated risks. You stay informed about new trends and are often among the first in your circle to try new technologies or methods. You balance innovation with practical considerations.'
+                },
+                'Early Majority': {
+                    title: 'Early Majority',
+                    description: 'You belong to the early majority - you adopt new ideas after seeing them work for others. You\'re open to change but prefer to see some evidence of success before jumping in. You strike a good balance between innovation and caution, making thoughtful decisions about when to embrace new approaches.'
+                },
+                'Late Majority': {
+                    title: 'Late Majority',
+                    description: 'You are part of the late majority group. You prefer to wait until new ideas are well-established before adopting them. You value stability and proven methods, and you like to see widespread acceptance before making changes. You approach innovation with healthy skepticism and prefer gradual implementation.'
+                },
+                'Laggard': {
+                    title: 'Laggard',
+                    description: 'You are more traditional in your approach to new ideas. You prefer tried-and-true methods and are cautious about change. You value stability and prefer to stick with what works. When you do adopt new approaches, it\'s typically because they\'ve become necessary or standard practice. Your careful approach helps ensure stability and reduces risk.'
+                }
+            };
+
+            const category = categories[assessment.category];
+            const resultDiv = document.getElementById('resultCategory');
+            
+            resultDiv.innerHTML = `
+                <h3>${category.title}</h3>
+                <p>${category.description}</p>
+            `;
+            
+            // Hide form and show results
+            document.getElementById('assessmentForm').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+            
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Function to retrieve assessment data (for potential future use)
+        function getAssessmentData() {
+            return assessmentData;
+        }
+
+        // Function to get current assessment
+        function getCurrentAssessment() {
+            return window.currentAssessment || null;
+        }
+    </script>
+</body>
+</html>
